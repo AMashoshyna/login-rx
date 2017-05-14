@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>title</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+      <form class="login-form" action="">
+          <label for="email">Email (min-length 5 characters)
+
+          <input id="email" type="text" placeholder="email">
+          <p id="email-invalid-warning" class="hidden warning">Email invalid</p>
+          </label>
+          <label for="password">Password  (min-length 5 characters)
+          <input id="password" type="text" placeholder="password">
+          <p id="pwd-illegal-chars-warning" class="hidden warning">Password invalid (letters & numbers only)</p>
+          <p id="pwd-length-warning" class="hidden warning">Minimal length 5 characters</p>
+              </label>
+          <button id="login" disabled>LOGIN</button>
+      </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.4.0/Rx.js"></script>
+    <script src="helpers.js">    </script>
+    <script src="script.js"></script>
+  </body>
+</html>
