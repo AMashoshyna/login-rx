@@ -12,10 +12,35 @@ function validateEmail(email) {
     return re.test(email);
 }
 
-function validatePwd(str) {
-    return str.length >= 5
+function validateChar(char) {
+    const re = /^[a-zA-Z0-9]*$/
+    return re.test(char)
 }
 
+function validatePwd(str) {
+    return validateChar(str) && (str.length >= 5)
+}
+function isInvalidEmail(event) {
+    let email = event.target.value
+    if(!validateEmail(email)){
+        markInvalid(event.target)
+    } else {
+        unmarkInvalid(event.target)
+        markValid(event.target)
+    }
+    return event
+}
+function isInvalid(event) {
+    let pwd = event.target.value
+    if(!validateChar(pwd)) {
+        markInvalid(pwdEl)
+    } else {
+        unmarkInvalid(event.target)
+        markValid(pwdEl)
+    }
+
+    return event
+}
 function disable(btn) {
     btn.setAttribute("disabled", "")
 }
