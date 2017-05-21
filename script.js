@@ -1,27 +1,41 @@
 const loginBtn = getElement("login")
-const emailEl = getElement("email")
-const pwdEl = getElement("password")
+const emailInputElement = getElement("email")
+const passwordInputElement = getElement("password")
 
-const email =  getStream(emailEl, "blur")
-.filter(event => event.target.value !== "")
-.map(event => {
-  console.log(event);
-  return isInvalidEmail(event)
-})
-.filter(event => validateEmail(event.target.value))
+const validator = {
+  email: function(str) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return re.test(str)
+  },
+  password: function(char) {
+    const re = /^[a-zA-Z0-9]*$/
+    return re.test(char)
+  }
+}
 
-const password = getStream(pwdEl, "keyup")
-.filter(event => event.target.value !== "")
-.map(event => 
- { 
-return isInvalid(event)
-})
-.filter(event => validatePwd(event.target.value)).combineLatest(email)
+function setUpStream(input, eventType, validator) {
+  let data = getStream(input, eventType)
+    .map(event => event.target.value)
+    .filter(value => value !== "")
+  let valid = data.map(validator)
+  return { data: data, valid: valid }
+}
 
-password.subscribe(event => {
-  enable(loginBtn)
-})
 
-const login = getStream(loginBtn, "click")
-.combineLatest(password)
-.subscribe(val => console.log(val[1][0].target.value, val[1][1].target.value))
+let email = setUpStream(emailInputElement, 'blur', validator.email)
+let password = setUpStream(passwordInputElement, 'keyup', validator.password)
+
+let arr = [email, password]
+arr.map(input => input.valid)
+  .forEach(valid => valid 
+    ? markValid(emailInputElement) 
+    : markInvalid(emailInputElement))
+
+email.valid.combineLatest(password.valid)
+  .map(value => value.reduce((acc, next) => acc && next, true))
+  .subscribe(enabled => enabled? enable(loginBtn) : disable(loginBtn))
+
+email.data.combineLatest(password.data)
+  .sample(getStream(loginBtn, 'click'))
+  .subscribe(value => console.log(`email: ${value[0]}, password: ${value[1]}`))
+  
