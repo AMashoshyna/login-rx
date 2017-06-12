@@ -30,6 +30,7 @@ function enable(btn) {
 
 
 function markInvalid(elem) {
+    elem.classList.remove("valid")
 elem.classList.add("invalid")
 }
 
@@ -38,6 +39,7 @@ function unmarkInvalid(elem) {
 }
 
 function markValid(elem) {
+  elem.classList.remove("invalid")
   elem.classList.add("valid")
 }
 
