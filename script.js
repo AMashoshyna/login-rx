@@ -8,7 +8,7 @@ const validator = {
     return re.test(str)
   },
   password: function(char) {
-    const re = /^[a-zA-Z0-9]*$/
+    const re = /^[a-zA-Z0-9]{3,}$/
     return re.test(char)
   }
 }
