@@ -1,25 +1,28 @@
 const emailInvalidWarning = getElement('email-invalid-warning')
 const pwdLengthWarning = getElement('pwd-length-warning')
 const pwdIllegalCharsWarning = getElement('pwd-illegal-chars-warning')
+const spinner = getElement("spinner")
+const loginSuccess = getElement("login-success")
+const loginFailure = getElement("login-failure")
 function getElement(elem) { return document.getElementById(elem) } 
 
 function getStream(elem, event){
     return Rx.Observable.fromEvent(elem, event)
 }
 
-function validateEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-}
+// function validateEmail(email) {
+//     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+//     return re.test(email);
+// }
 
-function validateChar(char) {
-    const re = /^[a-zA-Z0-9]*$/
-    return re.test(char)
-}
+// function validateChar(char) {
+//     const re = /^[a-zA-Z0-9]*$/
+//     return re.test(char)
+// }
 
-function validatePwd(str) {
-    return validateChar(str) && (str.length >= 5)
-}
+// function validatePwd(str) {
+//     return validateChar(str) 
+// }
 
 function disable(btn) {
     btn.setAttribute("disabled", "")
@@ -53,13 +56,41 @@ function markValid(elem) {
      pwdIllegalCharsWarning.classList.remove('hidden')
  }
 
-function clean(event) {
-  event.target.classList.remove("invalid")
-  event.target.classList.remove("valid")
-  if(event.target.id ==='email') {
+function clean(element) {
+  element.classList.remove("invalid")
+  element.classList.remove("valid")
+  if(element.id ==='email') {
   emailInvalidWarning.classList.add('hidden')
-  } else if(event.target.id ==='password') {
+} else if(element.id ==='password') {
       pwdIllegalCharsWarning.classList.add('hidden')
       pwdLengthWarning.classList.add('hidden')
   }
+}
+
+function hideSpinner() {
+    spinner.classList.add('hidden')
+}
+
+function showSpinner() {
+    spinner.classList.remove('hidden')
+}
+
+function showLoginSuccess(user) {
+    loginSuccess.innerHTML = `You are logged in as ${user}`
+    loginSuccess.classList.remove('hidden')
+    inputs.forEach(element => {
+        element.setAttribute("disabled", "")
+        element.value = ""
+        clean(element)
+    })
+}
+
+function showLoginFailure() {
+    loginFailure.classList.remove('hidden')
+    passwordInputElement.value = ""
+    inputs.forEach(clean)
+}
+function hideLoginStatus() {
+    loginSuccess.classList.add('hidden')
+    loginFailure.classList.add('hidden')
 }
