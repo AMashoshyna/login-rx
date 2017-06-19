@@ -1,0 +1,26 @@
+{
+  "name": "rx_login",
+  "version": "1.0.0",
+  "description": "",
+  "main": "helpers.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AMashoshyna/login-rx.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AMashoshyna/login-rx/issues"
+  },
+  "homepage": "https://github.com/AMashoshyna/login-rx#readme",
+  "dependencies": {
+    "express": "^4.15.3",
+    "http": "0.0.0",
+    "url": "^0.11.0",
+    "ws": "^3.0.0"
+  }
+}
