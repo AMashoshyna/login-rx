@@ -13,22 +13,16 @@ const validator = {
   }
 }
 
-let emailData = getStream(emailInputElement, 'blur')
-    .map(event => event.target.value)
-    .filter(value => value !== "")
+let emailData = getValueStream(emailInputElement, 'blur')
     
-let emailValid = getStream(emailInputElement, 'blur')  
-    .map(event => event.target.value)
-    .filter(value => value !== "")
+let emailValid = emailData 
     .map(validator.email)
     .do(val => {
       val? markValid(emailInputElement)
       : markInvalid(emailInputElement)
     })
-let emailCorrectionValid = getStream(emailInputElement, 'keyup')
+let emailCorrectionValid = getValueStream(emailInputElement, 'keyup')
     .skipUntil(emailValid)
-    .map(event => event.target.value)
-    .filter(value => value !== "")
     .map(validator.email)
     .filter(val => val)
     .do(val => {
@@ -36,13 +30,9 @@ let emailCorrectionValid = getStream(emailInputElement, 'keyup')
       : markInvalid(emailInputElement)
     })
    
-let passwordData = getStream(passwordInputElement, 'keyup')
-    .map(event => event.target.value)
-    .filter(value => value !== "")
+let passwordData = getValueStream(passwordInputElement, 'keyup')
 
-let passwordValid = getStream(passwordInputElement, 'keyup')  
-    .map(event => event.target.value)
-    .filter(value => value !== "")
+let passwordValid = getValueStream(passwordInputElement, 'keyup')  
     .map(value => {
       return {
         password: value,
@@ -58,11 +48,15 @@ let passwordValid = getStream(passwordInputElement, 'keyup')
 let email$ = emailValid.merge(emailCorrectionValid)
 
 let inputs = [emailInputElement, passwordInputElement]
-inputs.map(element => getStream(element, 'focus').map(event => event.target).subscribe(clean))
+inputs.map(element => 
+  getStream(element, 'focus')
+  .map(event => event.target)
+  .subscribe(clean))
+
 let allControls =  [emailInputElement, passwordInputElement, loginBtn]
-allControls.map(element => getStream(element, 'click').subscribe(hideLoginStatus))
-
-
+allControls.map(element => 
+  getStream(element, 'click')
+  .subscribe(hideLoginStatus))
 
 email$.combineLatest(passwordValid)
   .map(value => value.reduce((acc, next) => acc && next, true))

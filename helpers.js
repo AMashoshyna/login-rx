@@ -9,20 +9,11 @@ function getElement(elem) { return document.getElementById(elem) }
 function getStream(elem, event){
     return Rx.Observable.fromEvent(elem, event)
 }
-
-// function validateEmail(email) {
-//     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-//     return re.test(email);
-// }
-
-// function validateChar(char) {
-//     const re = /^[a-zA-Z0-9]*$/
-//     return re.test(char)
-// }
-
-// function validatePwd(str) {
-//     return validateChar(str) 
-// }
+function getValueStream(elem, event) {
+    return getStream(elem, event)
+    .map(event => event.target.value)
+    .filter(value => value !== "")
+}
 
 function disable(btn) {
     btn.setAttribute("disabled", "")
