@@ -82,6 +82,10 @@ emailData.combineLatest(passwordData)
       }, 1000)
     })
   }
-
+const usersUrl = 'http://localhost:8080/users.json'
+let usersRequest$ = Rx.Observable.of(usersUrl)
+usersRequest$.subscribe(url => {
+  let userResponse$ = Rx.Observable.fromPromise(getData(url)).map(JSON.stringify).subscribe(console.log)
+})
 
   

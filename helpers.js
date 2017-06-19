@@ -85,3 +85,7 @@ function hideLoginStatus() {
     loginSuccess.classList.add('hidden')
     loginFailure.classList.add('hidden')
 }
+
+function getData(url) {
+    return fetch(url).then(val => val.json())
+}
